@@ -17,7 +17,7 @@ namespace Chatters
     {
         private List<Group> Groups = new List<Group>();
         private List<Channel> Channels = new List<Channel>();
-        RTMMessenger messenger = new RTMMessenger();
+        private RTMMessenger messenger = new RTMMessenger();
         public Main()
         {
             InitializeComponent();
@@ -37,14 +37,15 @@ namespace Chatters
                                 messenger,
                                 "received",
                                 false,
-                                DataSourceUpdateMode.OnPropertyChanged);            
-            await messenger.Connect();
+                                DataSourceUpdateMode.OnPropertyChanged);
+            this.messenger.context = SynchronizationContext.Current;            
+            await this.messenger.Connect();
             Groups.AddRange(messenger.response.Groups);
             lstChannels.DataSource = Groups;
             lstChannels.DisplayMember = "Name";
             lstChannels.ValueMember = "Id";
-            Groups.AddRange(messenger.response.Groups);
-            lstGroups.DataSource = Groups;
+            Channels.AddRange(messenger.response.Channels);
+            lstGroups.DataSource = Channels;
             lstGroups.DisplayMember = "Name";
             lstGroups.ValueMember = "Id";
             lstGroups.Enabled = true;

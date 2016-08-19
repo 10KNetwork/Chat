@@ -15,6 +15,7 @@ namespace Handlers
 {
     public class RTMMessenger:INotifyPropertyChanged
     {
+        public SynchronizationContext context;
         private string _token;
         private string _email;
         private string _teamName;
@@ -38,7 +39,7 @@ namespace Handlers
                 if (value != _received)
                 {
                     _received = value;
-                    NotifyPropertyChanged();
+                    context.Post(x =>NotifyPropertyChanged(), null);
                 }
             }
         }
@@ -111,8 +112,8 @@ namespace Handlers
                 _teamName,
                 _email,
                 _password);
-            
-            await Connect(response = await Start(handler.authenticate()));         
+            response = await Start(handler.authenticate());
+            await Connect(response);         
         }
         private async Task<Response> Start(OAuthJSON user)
         {
