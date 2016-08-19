@@ -15,6 +15,7 @@ namespace Chatters
 {
     public partial class Main : Form
     {
+        //Test
         private List<Group> Groups = new List<Group>();
         private List<Channel> Channels = new List<Channel>();
         private RTMMessenger messenger = new RTMMessenger();
